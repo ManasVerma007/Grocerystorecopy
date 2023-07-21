@@ -1,0 +1,98 @@
+{% extends "base.html" %} {% block head %} {{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename= 'demo.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename= 'demo2.css') }}">
+<title>ADMIN HOME PAGE</title>
+
+{% endblock %}
+
+{% block nav %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbar">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" id="home" href="/">Logout</a>
+      <!-- <a class="nav-item nav-link" id="user_login" href="/user_signup">User-signup</a> -->
+      
+
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<h1>This is the Home page for admin</h1>
+
+{% if bool==True %}
+{% if boolcat==True %}
+<h1>List of Categories</h1>
+<br>
+<div id="table-container">
+  <table id="dataTable">
+    <tr>
+      <th>Category Name</th>
+    </tr>
+    {% for row in data %}
+      <tr>
+        <td>{{ row.cat_name }}</td>
+        <td>
+         
+          <a href="{{ url_for('main.update_category', categories_id=row.id) }}" class="btn btn-primary">Edit</a>
+          <a href="{{ url_for('main.delete_category', categories_id=row.id) }}" class="btn btn-danger">Delete</a>
+          <a href="{{ url_for('main.add_item', categories_id=row.id) }}" class="btn btn-success">Add Item</a>
+          <a href="{{ url_for('main.view_items', categories_id=row.id,type='1')}}" class="btn btn-warning">View Items</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<form action="/admin-home{{ 'true' if bool1 else 'false' }} " method="post" style="display: flex;justify-content: center;align-items: center;margin-top:20px">
+  <button type="submit" class="btn btn-primary">Add New Category</button>
+</form>
+{% else %}
+
+<br>
+<div class="buttonwrap">
+<div>
+  <h2>Enter category name below:</h2>
+  <form action="/adminhomecategories" method="post">
+    <input type="text" name="category_name" placeholder="Category Name">
+    <button type="submit" class="btn btn-primary">Add to Table</button>
+  </form>
+</div>
+<div>
+  <form action="/adminshowcategories" method="post" style="margin-top:90px;">
+    <button type="submit" class="btn btn-primary">Categories</button>
+  </form>
+</div>
+</div>
+
+<div id="table-container">
+  <table id="dataTable">
+    <tr>
+      <th>Category Name</th>
+    </tr>
+    {% for row in data %}
+      <tr>
+        <td>{{ row.cat_name }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+
+
+{% endif %}
+
+{% else %}
+<h1>no categories present</h1>
+<div class="button-wrapper">
+  <a href="{{ url_for('main.adminhome', bool1=True) }}">
+      <button class="button">Add New Category</button>
+  </a>
+</a>
+
+</div>
+{% endif %}
+{% endblock %}

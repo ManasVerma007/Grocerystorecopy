@@ -1,0 +1,21 @@
+.button-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px; /* Adjust the margin as needed to create space between the buttons and the top of the page */
+}
+
+.button-wrapper a {
+    text-decoration: none;
+}
+
+.button {
+    padding: 10px 20px;
+    margin-top:300px; 
+    margin-left: 10px;/* Add margins to create space between the buttons */
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

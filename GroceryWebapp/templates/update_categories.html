@@ -1,0 +1,41 @@
+{% extends "base.html" %} {% block head %} {{ super() }}
+<title>Update Categories</title>
+{% endblock %}
+
+
+{% block nav %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbar">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" id="home" href="/">Logout</a>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<h1>This is update  categories page</h1>
+
+<div class="col-md-4 col-md-offset-4">
+    <form
+      method="POST"
+      action="{{ url_for('main.update_category', categories_id=categories.id) }}"
+    >
+      <h2>Update category</h2>
+      <div class="form-group">
+        <label for="ncategory">New Category</label>
+        <input
+          type="text"
+          class="form-control"
+          id="ncategory"
+          name="ncategory"
+          placeholder="Enter number name of new category"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </div>
+  {% endblock %}

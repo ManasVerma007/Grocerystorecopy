@@ -1,0 +1,87 @@
+{% extends "base.html" %} {% block head %} {{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename= 'demo.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename= 'demo2.css') }}">
+<title>ADD ITEMS</title>
+
+{% endblock %}
+
+
+{% block nav %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbar">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" id="home" href="/">Logout</a>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+
+{% block content %}
+
+{% if check=='1' %}
+<div id="table-container">
+  <table id="dataTable">
+    <tr>
+      <th>Product Name</th>
+      <th>Manufacture Date</th>
+      <th>Expiry Date</th>
+      <th>Price Per Unit</th>
+      <th>Actions</th> <!-- Add a new header column for the buttons -->
+    </tr>
+    {% for row in prod %}
+      <tr>
+        <td>{{ row.product_name }}</td>
+        <td>{{ row.manufacture }}</td>
+        <td>{{ row.expiry }}</td>
+        <td>{{ row.p_per_u }}</td>
+        <td>
+          <a href="{{ url_for('main.update_item', item_id=row.id,type='2') }}" class="btn btn-primary">Edit</a>
+
+          <a href="{{ url_for('main.delete_item', item_id=row.id,type='2') }}" class="btn btn-danger">Delete</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+<br>
+<center><a href="/adminshowcategories" class="btn btn-primary">Go Back</a></center>
+
+
+{% elif check=='2' %}
+
+<div class="container">
+  <h1>Product Form</h1>
+  <form action="{{ url_for('main.update_item', item_id=item_id, type=check) }}" method="post">
+    <div class="form-group">
+      <label for="productName">Product Name</label>
+      <input type="text" class="form-control" id="productName" name="product_name" placeholder="Product Name" required>
+    </div>
+    <div class="form-group">
+      <label for="manufactureDate">Manufacture Date</label>
+      <input type="date" class="form-control" id="manufactureDate" name="manufacture_date" required>
+    </div>
+    <div class="form-group">
+      <label for="expiryDate">Expiry Date</label>
+      <input type="date" class="form-control" id="expiryDate" name="expiry_date" required>
+    </div>
+    <div class="form-group">
+      <label for="pricePerUnit">Price Per Unit</label>
+      <input type="number" step="0.01" class="form-control" id="pricePerUnit" name="price_per_unit" placeholder="Price Per Unit" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+<br>
+<center><a href="{{ url_for('main.revert_item', item_id=item_id,type='1') }}" class="btn btn-primary">Go Back</a></center>
+
+
+{% else %}
+
+{% endif %}
+
+  
+{% endblock %}

@@ -15,18 +15,16 @@ def userlogin():
         user = User.query.filter_by(email=email).first()
         print(email, password)
         if user:
-            if (user.password == password):
+            if (user.password == password and user.Place == "useronly"):
                 print("ha")
                 flash('Logged in successfully!', category='success')
-                # user gets remembered and dont have to login every single time you visit website.
-                login_user(user, remember=True)
-                return render_template("home_user.html", user=current_user)
+                return redirect(url_for('main.userhome'))
             else:
                 flash('Incorrect password, try again.', category='error')
                 return render_template("user_login.html")
         else:
             flash('Email does not exist.', category='error')
-    return render_template("user_login.html", user=current_user)
+    return render_template("user_login.html")
 
 
 @auth.route('/admin_login',methods=['GET', 'POST'])
@@ -69,7 +67,7 @@ def usersignup():
             flash('First name must be greater than 1 character', category='error')
         elif password1 != password2:
             flash('Passwords do not match', category='error')
-        elif len(password1) < 3:
+        elif len(password1) < 1:
             flash('password must be at least 3 characters', category='error')
         else:
             new_user = User(email=email, first_name=first_name,
@@ -93,24 +91,24 @@ def adminsignup():
         user = User.query.filter_by(email=email).first()
         if user:
             flash('Email already exists.', category='error')
-        elif (len(email)) < 4:
+        elif (len(email)) < 1:
             flash('email must be > than 4 letters', category='error')
         elif len(first_name) < 2:
             flash('First name must be greater than 1 character', category='error')
         elif password1 != password2:
             flash('Passwords do not match', category='error')
-        elif len(password1) < 4:
+        elif len(password1) < 1:
             flash('password must be at least 4 characters', category='error')
         else:
             new_user = User(email=email, first_name=first_name,
-                            password=generate_password_hash(password1, method='sha256'))
+                            password=password1,Place="adminonly" )
 # defined all the fields in models.py of 'User' and set them = to the variables here.(line 33,34)
 
             db.session.add(new_user)
             db.session.commit()
             flash('Account created!', category='success')
-            return redirect(url_for('main.home'))
-    return render_template("admin_signup.html", user=current_user)
+            return render_template("home_admin.html")  
+    return render_template("admin_signup.html")
 
 
 @auth.route('/logout')

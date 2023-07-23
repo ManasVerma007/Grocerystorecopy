@@ -10,6 +10,7 @@
   <div class="collapse navbar-collapse" id="navbar">
     <div class="navbar-nav">
       <a class="nav-item nav-link" id="home" href="/">Logout</a>
+      <a class="nav-item nav-link" id="home" href="{{url_for('main.usercart', userid=userid)}}">Cart</a>
       <!-- <a class="nav-item nav-link" id="user_login" href="/user_signup">User-signup</a> -->
 
 
@@ -58,8 +59,8 @@
     <table>
         <tr>
             <th>Category</th>
-            <th>Product Name</th>
-            <th>Price</th>
+            <th>Products</th>
+
         </tr>
         {% for category in categories %}
         <tr>
@@ -68,7 +69,7 @@
             <td>
                 <b>{{ product.product_name }}</b><br>
                 Price: {{ product.p_per_u }}<br>
-                <a href="{{url_for('main.addtocart', product_id=product.id)}}" class="btn btn-primary">Add This</a>
+                <a href="{{url_for('main.addtocart', product_id=product.id,userid=userid)}}" class="btn btn-primary">Add This</a>
             </td>
             {% endfor %}
         </tr>

@@ -23,7 +23,7 @@
 <h1>Add to cart page</h1>
 <body>
     <h1>Product Details</h1>
-    <form method="POST" action="{{ url_for('main.addtocart', product_id=product_id)}}">
+    <form method="POST" action="{{ url_for('main.addtocart', product_id=product_id,userid=userid)}}">
         <table>
             <tr>
                 <th>Product Name</th>
@@ -61,7 +61,9 @@
     </div>
     <br>
 
-    <a href="" class="btn btn-primary">Add to Cart</a>
+    <a href="{{ url_for('main.savecart',quantity=total_quantity,total=total_price,userid=userid,productid=product.id)}}" class="btn btn-primary">Add to Cart</a>
+    <a href="{{ url_for('main.showcart',userid=userid,productid=product.id)}}" class="btn btn-primary">Show Cart</a>
+    <a href="{{url_for('main.userhome',userid=userid)}}" class="btn btn-primary">Dashboard</a>
 
 </body>
 

@@ -1,0 +1,111 @@
+{% extends "base.html" %} {% block head %} {{ super() }}
+<title>USER HOME PAGE</title>
+{% endblock %}
+
+{% block nav %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbar">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" id="home" href="/">Logout</a>
+      <!-- <a class="nav-item nav-link" id="user_login" href="/user_signup">User-signup</a> -->
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+{% if purchbool != True %}
+<div class="container mt-5">
+    <h1>{{ user.first_name }}'s Cart</h1>
+    <table class="table mt-4">
+
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Product Name</th>
+                <th>Manufacture</th>
+                <th>Expiry</th>
+                <th>Price per Unit</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in cartdata %}
+            <tr>
+                <td>{{ item.product.category.cat_name }}</td>
+                <td>{{ item.product.product_name }}</td>
+                <td>{{ item.product.manufacture }}</td>
+                <td>{{ item.product.expiry }}</td>
+                <td>{{ item.product.p_per_u }}</td>
+                <td>{{ item.cart_quantity }}</td>
+                <td>{{ item.cart_amount }}</td>
+                <td><a class="btn btn-primary" href="{{ url_for('main.delete_cart', cartid=item.cart_id, userid=user.id) }}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    
+    <div class="alert alert-info" role="alert">
+        Total amount = ₹ {{ totalprice}}
+        <br>
+    </div>
+
+    <a href="{{ url_for('main.purchase', userid=user.id) }}" class="btn btn-primary">Purchase</a>
+
+
+    <a href="{{ url_for('main.userhome', userid=user.id) }}" class="btn btn-primary">Dashboard</a>
+</div>
+{% else %}
+<div class="container mt-5">
+  <h1>{{ user.first_name }}'s Cart</h1>
+  <table class="table mt-4">
+
+      <thead>
+          <tr>
+              <th>Category</th>
+              <th>Product Name</th>
+              <th>Manufacture</th>
+              <th>Expiry</th>
+              <th>Price per Unit</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th>Delete</th>
+          </tr>
+      </thead>
+
+      <tbody>
+          {% for item in cartdata %}
+          <tr>
+              <td>{{ item.product.category.cat_name }}</td>
+              <td>{{ item.product.product_name }}</td>
+              <td>{{ item.product.manufacture }}</td>
+              <td>{{ item.product.expiry }}</td>
+              <td>{{ item.product.p_per_u }}</td>
+              <td>{{ item.cart_quantity }}</td>
+              <td>{{ item.cart_amount }}</td>
+              <td><a class="btn btn-primary" href="{{ url_for('main.delete_cart', cartid=item.cart_id, userid=user.id) }}">Delete</a></td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+ 
+  
+  <div class="alert alert-info" role="alert">
+      <br>
+  </div>
+
+
+  <a href="{{ url_for('main.userhome', userid=user.id) }}" class="btn btn-primary">Dashboard</a>
+
+  <center><p> Thank You For Purchasing !!!</p></center>
+</div>
+{% endif %}
+{% endblock %}

@@ -18,7 +18,7 @@ def userlogin():
             if (user.password == password and user.Place == "useronly"):
                 print("ha")
                 flash('Logged in successfully!', category='success')
-                return redirect(url_for('main.userhome'))
+                return redirect(url_for('main.userhome',userid=user.id))
             else:
                 flash('Incorrect password, try again.', category='error')
                 return render_template("user_login.html")
@@ -30,7 +30,7 @@ def userlogin():
 @auth.route('/admin_login',methods=['GET', 'POST'])
 def adminlogin():
 
-    if request.method == 'POST':
+    if request.method == "POST":
         email = request.form.get('email')
         password = request.form.get('password')
         user = User.query.filter_by(email=email).first()
@@ -40,7 +40,6 @@ def adminlogin():
                 print("hi")
                 flash('Logged in successfully!', category='success')
                 # user gets remembered and dont have to login every single time you visit website.
-                login_user(user, remember=True)
                 return redirect(url_for('main.adminhome',bool1=False))
             else:
                 flash('Incorrect password, try again.', category='error')
@@ -107,7 +106,7 @@ def adminsignup():
             db.session.add(new_user)
             db.session.commit()
             flash('Account created!', category='success')
-            return render_template("home_admin.html")  
+            return render_template("admin_login.html")  
     return render_template("admin_signup.html")
 
 

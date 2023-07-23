@@ -12,7 +12,7 @@ class User(db.Model,UserMixin):  # schema of the user sign-up info
 class Categories(db.Model,UserMixin):
     id=db.Column(db.Integer,primary_key=True)
     cat_name=db.Column(db.String(150),unique=True,nullable=False)
-    # u_id = db.Column(db.Integer, db.ForeignKey("user.id") ,nullable = False)
+    products = db.relationship('Products', backref='category')
 
 class Products(db.Model,UserMixin):
     id=db.Column(db.Integer,primary_key=True)
@@ -22,10 +22,12 @@ class Products(db.Model,UserMixin):
     p_per_u=db.Column(db.Float,nullable=False)
     c_id = db.Column(db.Integer, db.ForeignKey("categories.id") ,nullable = False)
 
-# class Cart(db.Model,UserMixin):
-#     cart_item_id=db.Column(db.Integer,db.ForeignKey("products.id"),nullable=False,primary_key=True)
-#     cart_user_id=db.Column(db.Integer,db.ForeignKey("user.id"),nullable = False,primary_key=True)
-#     cart_cat_id = db.Column(db.Integer, db.ForeignKey("categories.id") ,nullable = False,primary_key=True)
-#     cart_quantity=db.Column(db.Integer,nullable=False)
-#     cart_amount=db.Column(db.Float,nullable=False)
-    
+class Cart(db.Model,UserMixin):
+    cart_id=db.Column(db.Integer,primary_key=True)
+    cart_item_id=db.Column(db.Integer,db.ForeignKey("products.id"),nullable=False)
+    cart_user_id=db.Column(db.Integer,db.ForeignKey("user.id"),nullable = False)
+    cart_cat_id = db.Column(db.Integer, db.ForeignKey("categories.id") ,nullable = False)
+    cart_quantity=db.Column(db.Integer,nullable=False)
+    cart_amount=db.Column(db.Float,nullable=False)
+    product = db.relationship('Products', foreign_keys=[cart_item_id])
+    Categs = db.relationship('Categories', foreign_keys=[cart_cat_id])

@@ -1,10 +1,11 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from os import path
-from flask_login import login_required, current_user
 from . import db
+from .models import User
 from .models import Categories
 from .models import Products
+from .models import Cart
 import json
 
 main = Blueprint("main", __name__)
@@ -15,12 +16,12 @@ def base():
     return render_template("base.html")
 
 
-@main.route('/userhome')
-def userhome():
+@main.route('/userhome/<int:userid>')
+def userhome(userid):
     categories = Categories.query.all()
     for category in categories:
         category.products = Products.query.filter_by(c_id=category.id).all()
-    return render_template('home_user.html', categories=categories)
+    return render_template('home_user.html', categories=categories,userid=userid)
 
 
 @main.route('/admin-home<bool1>', methods=['GET', 'POST'])
@@ -142,13 +143,13 @@ def delete_category(categories_id):
     return render_template("home_admin.html", bool=True, data=datacat, boolcat=True)
 
 
-@main.route("/addtocart/<string:product_id>", methods=['GET', 'POST'])
-def addtocart(product_id):
+@main.route("/addtocart/<string:product_id>/<int:userid>", methods=['GET', 'POST'])
+def addtocart(product_id,userid):
     product_id = int(product_id)
     product = Products.query.get(product_id)
     total_quantity = 0
     total_price = 0
-    # nitem = Products.query.get_or_404(item_id)
+
 
     if request.method == "POST":
         product = Products.query.get(product_id)
@@ -161,12 +162,78 @@ def addtocart(product_id):
 
         return render_template(
             "addtocart.html",product=product, product_id=product_id, total=total,
-            total_quantity=total_quantity, total_price=total_price
+            total_quantity=total_quantity, total_price=total_price,userid=userid
         )
 
     return render_template(
-        "addtocart.html", product=product, product_id=product_id,total_quantity=total_quantity, total_price=total_price
+        "addtocart.html", product=product, product_id=product_id,total_quantity=total_quantity, total_price=total_price,userid=userid
     )
 
-# @main.route("/cart/<string:product_id>", methods=['GET', 'POST'])
-# def cart(product_id):
+@main.route("/savecart/<string:productid>/<int:quantity>/<int:total>/<int:userid>", methods=['GET', 'POST'])
+def savecart(productid,quantity,total,userid):
+    items= Products.query.get_or_404(productid)
+    categoryid=items.c_id
+    cartentry=Cart.query.filter_by(cart_user_id=userid, cart_item_id=productid).first()
+    if(cartentry ):
+        if(quantity+cartentry.cart_quantity<=50 and quantity>=1):
+            cartentry.cart_quantity+=quantity
+
+            db.session.commit()
+        elif(quantity+cartentry.cart_quantity>50 and quantity>=1):
+            cartentry.cart_quantity=50
+            db.session.commit()
+    elif(quantity>=1):
+        new_cart = Cart(cart_item_id=productid, cart_user_id=userid,
+                            cart_cat_id=categoryid, cart_quantity=quantity, cart_amount=total)
+        db.session.add(new_cart)
+        db.session.commit()
+
+    return redirect(url_for('main.addtocart',product_id=productid,userid=userid))
+
+@main.route("/showcart/<string:productid>/<int:userid>", methods=['GET', 'POST'])
+def showcart(productid,userid):
+    cartdata = Cart.query.filter_by(cart_user_id=userid).all()
+    user= User.query.get_or_404(userid)
+    items= Products.query.get_or_404(productid)
+    categoryid=items.c_id
+    usercartrecord=Cart.query.filter_by(cart_user_id=userid).all()
+    totalprice=0
+    for i in usercartrecord:
+        totalprice=totalprice+(i.cart_amount)
+    return render_template("cart.html",cartdata=cartdata,user=user, totalprice=totalprice)
+
+@main.route("/delcart/<int:cartid>/<int:userid>", methods=['GET', 'POST'])
+def delete_cart(cartid, userid):
+    ncart = Cart.query.get_or_404(cartid)
+    user= User.query.get_or_404(userid)
+    db.session.delete(ncart)
+    db.session.commit()
+    cartdata = Cart.query.filter_by(cart_user_id=userid).all()
+    flash('Your post has been deleted!')
+    usercartrecord=Cart.query.filter_by(cart_user_id=userid).all()
+    totalprice=0
+    for i in usercartrecord:
+        totalprice=totalprice+(i.cart_amount)
+    return render_template("cart.html", user=user, cartdata=cartdata, totalprice=totalprice)
+
+@main.route("/usercart/<int:userid>", methods=['GET', 'POST'])
+def usercart(userid):
+    cartdata = Cart.query.filter_by(cart_user_id=userid).all()
+    user= User.query.get_or_404(userid)
+    usercartrecord=Cart.query.filter_by(cart_user_id=userid).all()
+    totalprice=0
+    for i in usercartrecord:
+        totalprice=totalprice+(i.cart_amount)
+
+    return render_template("cart.html",cartdata=cartdata,user=user,totalprice=totalprice)
+
+@main.route("/purchase/<int:userid>", methods=['GET', 'POST'])
+def purchase(userid):
+    cartdata = Cart.query.filter_by(cart_user_id=userid).all()
+    for cart in cartdata:
+        db.session.delete(cart)
+        db.session.commit()
+    user= User.query.get_or_404(userid)
+    return render_template("cart.html",user=user,purchbool=True)
+
+    

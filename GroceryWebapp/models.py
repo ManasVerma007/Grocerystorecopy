@@ -20,6 +20,7 @@ class Products(db.Model,UserMixin):
     manufacture=db.Column(db.String(150))
     expiry=db.Column(db.String(150))
     p_per_u=db.Column(db.Float,nullable=False)
+    stock=db.Column(db.Integer,nullable=False)
     c_id = db.Column(db.Integer, db.ForeignKey("categories.id") ,nullable = False)
 
 class Cart(db.Model,UserMixin):

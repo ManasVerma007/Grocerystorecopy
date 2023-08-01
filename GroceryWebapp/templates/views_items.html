@@ -30,6 +30,7 @@
       <th>Manufacture Date</th>
       <th>Expiry Date</th>
       <th>Price Per Unit</th>
+      <th>Available Stock</th>
       <th>Actions</th> <!-- Add a new header column for the buttons -->
     </tr>
     {% for row in prod %}
@@ -38,6 +39,7 @@
         <td>{{ row.manufacture }}</td>
         <td>{{ row.expiry }}</td>
         <td>{{ row.p_per_u }}</td>
+        <td>{{ row.stock }}</td>
         <td>
           <a href="{{ url_for('main.update_item', item_id=row.id,type='2') }}" class="btn btn-primary">Edit</a>
 
@@ -71,6 +73,10 @@
     <div class="form-group">
       <label for="pricePerUnit">Price Per Unit</label>
       <input type="number" step="0.01" class="form-control" id="pricePerUnit" name="price_per_unit" placeholder="Price Per Unit" required>
+    </div>
+    <div class="form-group">
+      <label for="stock">STOCK</label>
+      <input type="number"  class="form-control" id="stock" name="stock" placeholder="Enter the stock" required>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>

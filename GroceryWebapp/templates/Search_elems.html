@@ -1,0 +1,60 @@
+{% extends "base.html" %} {% block head %} {{ super() }}
+<title>USER HOME PAGE</title>
+{% endblock %}
+
+{% block nav %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbar">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" id="home" href="/">Logout</a>
+      <a class="nav-item nav-link" id="home" href="{{url_for('main.usercart', userid=userid)}}">Cart</a>
+      <!-- <a class="nav-item nav-link" id="user_login" href="/user_signup">User-signup</a> -->
+
+
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<h1>Search Category</h1>
+<br>
+{% if role=="searchcateg" %}
+<form action="{{url_for('main.search_categ', userid=userid)}}" method="POST">
+  <div class="form-group">
+    <input type="text" class="form-control" name="category_name" placeholder="Enter category name">
+  </div>
+  <button type="submit" class="btn btn-primary">Search Category</button>
+</form>
+{% else %}
+<h1>Product Form</h1>
+<form method="post" action="{{ url_for('main.search_item', userid=userid) }}" class="form">
+  <div class="form-group">
+      <label for="product_name">Product Name:</label>
+      <input type="text" id="product_name" name="product_name" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+      <label for="price">Price:</label>
+      <input type="number" id="price" name="price" class="form-control">
+  </div>
+
+  <div class="form-group">
+      <label for="manufacture_date">Manufacture Date:</label>
+      <input type="date" id="manufacture_date" name="manufacture_date" class="form-control">
+  </div>
+
+  <div class="form-group">
+      <label for="expiry_date">Expiry Date:</label>
+      <input type="date" id="expiry_date" name="expiry_date" class="form-control">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endif %}
+
+{% endblock %}

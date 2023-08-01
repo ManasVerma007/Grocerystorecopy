@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+  <title>USER HOME PAGE</title>
+{% endblock %}
+
+{% block nav %}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="/">Logout</a>
+        <a class="nav-item nav-link" href="{{url_for('main.usercart', userid=userid)}}">Cart</a>
+        <!-- <a class="nav-item nav-link" href="/user_signup">User-signup</a> -->
+      </div>
+    </div>
+  </nav>
+{% endblock %}
+
+{% block content %}
+  <h1>Search Categories</h1>
+  <br>
+  {% if search == "categories" %}
+    {% if role == "found" %}
+      <h2>Category Name: {{ category.cat_name }}</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Manufacturer</th>
+            <th>Expiry</th>
+            <th>Price Per Unit</th>
+            <th>Stock</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in category.products %}
+            <tr>
+              <td>{{ product.product_name }}</td>
+              <td>{{ product.manufacture }}</td>
+              <td>{{ product.expiry }}</td>
+              <td>{{ product.p_per_u }}</td>
+              <td>{{ product.stock }}</td>
+              <td><a href="{{url_for('main.addtocart', product_id=product.id, userid=userid)}}" class="btn btn-primary">Add This</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="{{url_for('main.userhome', userid=userid)}}" class="btn btn-primary">Dashboard</a>
+    {% else %}
+      <p>Category not present</p>
+      <a href="{{url_for('main.userhome', userid=userid)}}" class="btn btn-primary">Dashboard</a>
+    {% endif %}
+  {% else %}
+    {% if role == "found" %}
+      {% if products %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Category Name</th>
+              <th>Item Name</th>
+              <th>Manufacture Date</th>
+              <th>Expiry Date</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+              <tr>
+                <td>{{ product.category.cat_name }}</td>
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.manufacture }}</td>
+                <td>{{ product.expiry }}</td>
+                <td>{{ product.p_per_u }}</td>
+                <td>{{ product.stock }}</td>
+                <td><a href="{{url_for('main.addtocart', product_id=product.id, userid=userid)}}" class="btn btn-primary">Add This</a></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <a href="{{url_for('main.userhome', userid=userid)}}" class="btn btn-primary">Dashboard</a>
+      {% else %}
+        <p>Sorry no product found</p>
+        <a href="{{url_for('main.userhome', userid=userid)}}" class="btn btn-primary">Dashboard</a>
+      {% endif %}
+    {% endif %}
+
+  {% endif %}
+{% endblock %}

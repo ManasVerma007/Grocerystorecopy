@@ -22,6 +22,12 @@
 {% block content %}
 <h1>This is the Home page for user</h1>
 
+<div class="d-flex">
+  <a href="{{url_for('main.searchcat', userid=userid)}}" class="btn btn-primary mr-2">Search Category</a>
+  <a href="{{url_for('main.searchitem', userid=userid)}}" class="btn btn-primary">Search Product</a>
+</div>
+
+
 <!DOCTYPE html>
 <html>
 <head>

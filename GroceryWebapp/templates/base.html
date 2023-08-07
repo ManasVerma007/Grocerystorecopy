@@ -1,53 +1,52 @@
 <!DOCTYPE html>
 <html>
 
-<head>{% block head %}
+<head>
+  
+  {% block head %}
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     crossorigin="anonymous" />
+  
   {% endblock %}
+
 </head>
 
-
 <body>
-  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbar">
-      <div class="navbar-nav">
-
-        <a class="nav-item nav-link" id="home" href="/">Home</a>
-        <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-
-        <a class="nav-item nav-link" id="login" href="/login">Login</a>
-        <a class="nav-item nav-link" id="signUp" href="/signup">Sign Up</a>
-
-      </div>
-    </div>
-  </nav> -->
   {% block nav %}
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbar">
+    <div  id="navbar">
       <div class="navbar-nav">
-        <a class="nav-item nav-link" id="home" href="/">Base</a>
-        <a class="nav-item nav-link" id="user_login" href="/user_login">UserLogin</a>
-        <a class="nav-item nav-link" id="admin_login" href="/admin_login">AdminLogin</a>
-
+        <a class="nav-item nav-link" id="user_login" href="/user_login">User Login</a>
+        <a class="nav-item nav-link" id="admin_login" href="/admin_login">Admin Login</a>
       </div>
     </div>
   </nav>
   {% endblock %}
-  
 
-  <div class="container">
+  <div class="container content-container">
     {% block content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'demo0.css') }}"
+    crossorigin="anonymous" />
+    <div class="jumbotron shadow">
+      <h1>Welcome to The Project</h1>
+      <ul>
+        <li>A web application using Flask and Jinja2.</li>
+        <li>A multi-user platform that facilitates grocery shopping for users.</li>
+        <li>Empowers the store manager to efficiently manage inventory.</li>
+        <li>Users can browse and purchase various products from different categories.</li>
+        <li>Store managers can add new sections, categories, and products to keep the app up-to-date.</li>
+        <li>Secured user authentication and authorization system for enhanced privacy and control.</li>
+        <li>Intuitive user interface with a user-friendly shopping cart for seamless shopping experience.</li>
+        <li>Real-time inventory tracking to avoid out-of-stock situations and maintain stock levels.</li>
+      </ul>
+    </div>
+
     {% endblock %}
   </div>
 </body>
+
+</html>

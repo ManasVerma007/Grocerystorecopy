@@ -1,40 +1,64 @@
-{% extends "base.html" %} {% block head %} {{ super() }}
-<title>Update Categories</title>
-{% endblock %}
+{% extends "base.html" %}
 
+{% block head %}
+{{ super() }}
+<title>Update Categories</title>
+<style>
+  body {
+    background-color: rgb(154, 206, 254);
+    color: rgb(0, 0, 0);
+  }
+
+  .container {
+    margin-top: 50px;
+    padding-block: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: rgb(255, 255, 255);
+  }
+
+  .col-md-4 {
+    margin: auto;
+    margin-top: 50px;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+
+  .btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+  }
+</style>
+{% endblock %}
 
 {% block nav %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbar">
+  <div id="navbar">
     <div class="navbar-nav">
       <a class="nav-item nav-link" id="home" href="/">Logout</a>
     </div>
   </div>
 </nav>
 {% endblock %}
-{% block content %}
-<h1>This is update  categories page</h1>
 
-<div class="col-md-4 col-md-offset-4">
-    <form
-      method="POST"
-      action="{{ url_for('main.update_category', categories_id=categories.id) }}"
-    >
-      <h2>Update category</h2>
+{% block content %}
+<div class="container">
+  <div class="col-md-4 col-md-offset-4">
+    <form method="POST" action="{{ url_for('main.update_category', categories_id=categories.id) }}">
+      <h2 class="text-center">Update category</h2>
       <div class="form-group">
         <label for="ncategory">New Category</label>
-        <input
-          type="text"
-          class="form-control"
-          id="ncategory"
-          name="ncategory"
-          placeholder="Enter number name of new category"
-        />
+        <input type="text" class="form-control" id="ncategory" name="ncategory" placeholder="Enter new category name" />
       </div>
-      <button type="submit" class="btn btn-primary">Update</button>
+      <button type="submit" class="btn btn-primary btn-block">Update</button>
     </form>
   </div>
-  {% endblock %}
+</div>
+{% endblock %}

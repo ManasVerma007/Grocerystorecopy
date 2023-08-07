@@ -1,17 +1,74 @@
-{% extends "base.html" %} {% block head %} {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename= 'demo.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename= 'demo2.css') }}">
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
 <title>ADD ITEMS</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='demo.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='demo2.css') }}">
+<style>
+  body {
+    background-color: lightblue;
+    color: black;
+  }
 
+  .container {
+    margin-top: 50px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: rgb(255, 255, 255);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+
+  .btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+  }
+
+  /* Style the table and its borders */
+  #dataTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  #dataTable th,
+  #dataTable td {
+    padding: 10px;
+    text-align: center;
+  }
+
+  #dataTable th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    border-bottom: 2px solid #333;
+  }
+
+  #dataTable td {
+    border-bottom: 1px solid #ddd;
+  }
+
+  /* Center the "Go Back" button */
+  .text-center {
+    text-align: center;
+  }
+</style>
 {% endblock %}
-
 
 {% block nav %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbar">
+  <div id="navbar">
     <div class="navbar-nav">
       <a class="nav-item nav-link" id="home" href="/">Logout</a>
     </div>
@@ -19,10 +76,9 @@
 </nav>
 {% endblock %}
 
-
 {% block content %}
 
-{% if check=='1' %}
+{% if check == '1' %}
 <div id="table-container">
   <table id="dataTable">
     <tr>
@@ -34,26 +90,24 @@
       <th>Actions</th> <!-- Add a new header column for the buttons -->
     </tr>
     {% for row in prod %}
-      <tr>
-        <td>{{ row.product_name }}</td>
-        <td>{{ row.manufacture }}</td>
-        <td>{{ row.expiry }}</td>
-        <td>{{ row.p_per_u }}</td>
-        <td>{{ row.stock }}</td>
-        <td>
-          <a href="{{ url_for('main.update_item', item_id=row.id,type='2') }}" class="btn btn-primary">Edit</a>
-
-          <a href="{{ url_for('main.delete_item', item_id=row.id,type='2') }}" class="btn btn-danger">Delete</a>
-        </td>
-      </tr>
+    <tr>
+      <td>{{ row.product_name }}</td>
+      <td>{{ row.manufacture }}</td>
+      <td>{{ row.expiry }}</td>
+      <td>{{ row.p_per_u }}</td>
+      <td>{{ row.stock }}</td>
+      <td>
+        <a href="{{ url_for('main.update_item', item_id=row.id, type='2') }}" class="btn btn-primary">Edit</a>
+        <a href="{{ url_for('main.delete_item', item_id=row.id, type='2') }}" class="btn btn-danger">Delete</a>
+      </td>
+    </tr>
     {% endfor %}
   </table>
 </div>
 <br>
 <center><a href="/adminshowcategories" class="btn btn-primary">Go Back</a></center>
 
-
-{% elif check=='2' %}
+{% elif check == '2' %}
 
 <div class="container">
   <h1>Product Form</h1>
@@ -76,18 +130,16 @@
     </div>
     <div class="form-group">
       <label for="stock">STOCK</label>
-      <input type="number"  class="form-control" id="stock" name="stock" placeholder="Enter the stock" required>
+      <input type="number" class="form-control" id="stock" name="stock" placeholder="Enter the stock" required>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>
 <br>
-<center><a href="{{ url_for('main.revert_item', item_id=item_id,type='1') }}" class="btn btn-primary">Go Back</a></center>
-
+<center><a href="{{ url_for('main.revert_item', item_id=item_id, type='1') }}" class="btn btn-primary">Go Back</a></center>
 
 {% else %}
 
 {% endif %}
 
-  
 {% endblock %}

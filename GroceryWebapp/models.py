@@ -1,34 +1,62 @@
-from . import db # importing current package (website folder) ie: db object
+from . import db  # Importing current package (website folder), i.e., the db object
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 
-class User(db.Model,UserMixin):  # schema of the user sign-up info
-    id =db.Column(db.Integer,primary_key=True)
-    email=db.Column(db.String(150),unique=True)
-    password=db.Column(db.String(150))
-    first_name=db.Column(db.String(150))
-    Place=db.Column(db.String(150))
 
-class Categories(db.Model,UserMixin):
-    id=db.Column(db.Integer,primary_key=True)
-    cat_name=db.Column(db.String(150),unique=True,nullable=False)
-    products = db.relationship('Products', backref='category')
+# User model representing user sign-up information
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)  # Primary key for the user
+    email = db.Column(db.String(150), unique=True)  # User's email address
+    password = db.Column(db.String(150))  # User's password
+    first_name = db.Column(db.String(150))  # User's first name
+    Place = db.Column(db.String(150))  # User's place of residence
 
-class Products(db.Model,UserMixin):
-    id=db.Column(db.Integer,primary_key=True)
-    product_name=db.Column(db.String(150),unique=True,nullable=False)
-    manufacture=db.Column(db.String(150))
-    expiry=db.Column(db.String(150))
-    p_per_u=db.Column(db.Float,nullable=False)
-    stock=db.Column(db.Integer,nullable=False)
-    c_id = db.Column(db.Integer, db.ForeignKey("categories.id") ,nullable = False)
 
-class Cart(db.Model,UserMixin):
-    cart_id=db.Column(db.Integer,primary_key=True)
-    cart_item_id=db.Column(db.Integer,db.ForeignKey("products.id"),nullable=False)
-    cart_user_id=db.Column(db.Integer,db.ForeignKey("user.id"),nullable = False)
-    cart_cat_id = db.Column(db.Integer, db.ForeignKey("categories.id") ,nullable = False)
-    cart_quantity=db.Column(db.Integer,nullable=False)
-    cart_amount=db.Column(db.Float,nullable=False)
-    product = db.relationship('Products', foreign_keys=[cart_item_id])
-    Categs = db.relationship('Categories', foreign_keys=[cart_cat_id])
+# Categories model representing product categories
+class Categories(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)  # Primary key for the category
+    cat_name = db.Column(db.String(150), unique=True, nullable=False)  # Category name
+    products = db.relationship(
+        "Products", backref="category"
+    )  # Relationship with Products model
+
+
+# Products model representing individual products
+class Products(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)  # Primary key for the product
+    product_name = db.Column(
+        db.String(150), unique=True, nullable=False
+    )  # Product name
+    manufacture = db.Column(db.String(150))  # Manufacturing date of the product
+    expiry = db.Column(db.String(150))  # Expiry date of the product
+    p_per_u = db.Column(db.Float, nullable=False)  # Price per unit of the product
+    stock = db.Column(db.Integer, nullable=False)  # Available stock quantity
+    c_id = db.Column(
+        db.Integer, db.ForeignKey("categories.id"), nullable=False
+    )  # Category foreign key
+
+
+# Cart model representing user's shopping cart
+class Cart(db.Model, UserMixin):
+    cart_id = db.Column(db.Integer, primary_key=True)  # Primary key for the cart
+    cart_item_id = db.Column(
+        db.Integer, db.ForeignKey("products.id"), nullable=False
+    )  # Product foreign key
+    cart_user_id = db.Column(
+        db.Integer, db.ForeignKey("user.id"), nullable=False
+    )  # User foreign key
+    cart_cat_id = db.Column(
+        db.Integer, db.ForeignKey("categories.id"), nullable=False
+    )  # Category foreign key
+    cart_quantity = db.Column(
+        db.Integer, nullable=False
+    )  # Quantity of the product in the cart
+    cart_amount = db.Column(
+        db.Float, nullable=False
+    )  # Total amount of the product in the cart
+    product = db.relationship(
+        "Products", foreign_keys=[cart_item_id]
+    )  # Relationship with Products model
+    Categs = db.relationship(
+        "Categories", foreign_keys=[cart_cat_id]
+    )  # Relationship with Categories model

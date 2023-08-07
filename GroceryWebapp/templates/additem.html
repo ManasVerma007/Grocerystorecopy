@@ -1,14 +1,45 @@
-{% extends "base.html" %} {% block head %} {{ super() }}
-<title>ADD ITEMS</title>
-{% endblock %}
+{% extends "base.html" %}
 
+{% block head %}
+{{ super() }}
+<title>ADD ITEMS</title>
+<style>
+  body {
+    background-color: lightblue;
+    color: black;
+  }
+  /* Add any additional custom styles here */
+  .container {
+    margin-top: 50px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: rgb(255, 255, 255);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+
+  .btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+  }
+</style>
+{% endblock %}
 
 {% block nav %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbar">
+  <div id="navbar">
     <div class="navbar-nav">
       <a class="nav-item nav-link" id="home" href="/">Logout</a>
     </div>
@@ -17,35 +48,35 @@
 {% endblock %}
 
 {% block content %}
-<h1>This is Add items  page</h1>
-
 <div class="container">
-    <h1>Product Form</h1>
-    <form action="/additem/{{ cid }}" method="post">
-      <div class="form-group">
-        <label for="productName">Product Name</label>
-        <input type="text" class="form-control" id="productName" name="product_name" placeholder="Product Name" required>
-      </div>
-      <div class="form-group">
-        <label for="manufactureDate">Manufacture Date</label>
-        <input type="date" class="form-control" id="manufactureDate" name="manufacture_date" required>
-      </div>
-      <div class="form-group">
-        <label for="expiryDate">Expiry Date</label>
-        <input type="date" class="form-control" id="expiryDate" name="expiry_date" required>
-      </div>
-      <div class="form-group">
-        <label for="pricePerUnit">Price Per Unit</label>
-        <input type="number" step="0.01" class="form-control" id="pricePerUnit" name="price_per_unit" placeholder="Price Per Unit" required>
-      </div>
-      <div class="form-group">
-        <label for="productName">Stock</label>
-        <input type="number" class="form-control" id="stock" name="stock" placeholder="Quantity of Stock" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-  </div>
-  <br>
-  <center><a href="/adminshowcategories" class="btn btn-primary">Go Back</a></center>
+  <h1 class="text-center">Add Items Page</h1>
 
-{% endblock %}  
+  <form action="/additem/{{ cid }}" method="post">
+    <div class="form-group">
+      <label for="productName">Product Name</label>
+      <input type="text" class="form-control" id="productName" name="product_name" placeholder="Product Name" required>
+    </div>
+    <div class="form-group">
+      <label for="manufactureDate">Manufacture Date</label>
+      <input type="date" class="form-control" id="manufactureDate" name="manufacture_date" required>
+    </div>
+    <div class="form-group">
+      <label for="expiryDate">Expiry Date</label>
+      <input type="date" class="form-control" id="expiryDate" name="expiry_date" required>
+    </div>
+    <div class="form-group">
+      <label for="pricePerUnit">Price Per Unit</label>
+      <input type="number" step="0.01" class="form-control" id="pricePerUnit" name="price_per_unit" placeholder="Price Per Unit" required>
+    </div>
+    <div class="form-group">
+      <label for="productName">Stock</label>
+      <input type="number" class="form-control" id="stock" name="stock" placeholder="Quantity of Stock" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <br>
+  <div class="text-center">
+    <a href="/adminshowcategories" class="btn btn-primary">Go Back</a>
+  </div>
+</div>
+{% endblock %}

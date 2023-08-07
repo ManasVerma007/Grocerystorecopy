@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
-from flask_login import LoginManager
 
 
 db = SQLAlchemy()
@@ -28,12 +27,4 @@ def create_app():
     app.register_blueprint(main, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
 
-
-    login_manager=LoginManager()
-    login_manager.login_view='auth.login' # where the flask will redirect us if the user is not logged in or there is a login required
-    login_manager.init_app(app) # telling the login manager which app we are using
-
-    @login_manager.user_loader
-    def load_user(id):
-       return User.query.get(int(id))
     return app

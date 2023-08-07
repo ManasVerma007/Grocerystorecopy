@@ -1,97 +1,146 @@
-{% extends "base.html" %} {% block head %} {{ super() }}
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename= 'demo.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename= 'demo2.css') }}">
 <title>ADMIN HOME PAGE</title>
+<style>
+  body {
+    background-color: rgb(154, 206, 254);
+    color: rgb(0, 0, 0);
+  }
 
+  /* Add any additional custom styles here */
+  .container {
+    margin-top: 50px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: rgb(255, 255, 255);
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+
+  .btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+  }
+
+  /* Style the table and its borders */
+  #dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid #333; /* Darken the table borders */
+  }
+
+  #dataTable th,
+  #dataTable td {
+    border: 2px solid #333; /* Darken the table cell borders */
+    padding: 8px;
+    text-align: left;
+  }
+
+  #dataTable th {
+    background-color: #444; /* Darken the table header background */
+    color: white;
+  }
+
+  /* Center the "Add New Category" button */
+  .text-center {
+    text-align: center;
+  }
+</style>
 {% endblock %}
 
 {% block nav %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbar">
+  <div id="navbar">
     <div class="navbar-nav">
       <a class="nav-item nav-link" id="home" href="/">Logout</a>
-      <!-- <a class="nav-item nav-link" id="user_login" href="/user_signup">User-signup</a> -->
-      
-
     </div>
   </div>
 </nav>
 {% endblock %}
 
 {% block content %}
-<h1>This is the Home page for admin</h1>
+<div class="container mt-5">
+  <h1 class="text-center">Home page for admin</h1>
 
-{% if bool==True %}
-{% if boolcat==True %}
-<h1>List of Categories</h1>
-<br>
-<div id="table-container">
-  <table id="dataTable">
-    <tr> 
-      <th>Category Name</th>
-    </tr>
-    {% for row in data %}
-      <tr>
-        <td>{{ row.cat_name }}</td>
-        <td>
-         
-          <a href="{{ url_for('main.update_category', categories_id=row.id) }}" class="btn btn-primary">Edit</a>
-          <a href="{{ url_for('main.delete_category', categories_id=row.id) }}" class="btn btn-danger">Delete</a>
-          <a href="{{ url_for('main.add_item', categories_id=row.id) }}" class="btn btn-success">Add Item</a>
-          <a href="{{ url_for('main.view_items', categories_id=row.id,type='1')}}" class="btn btn-warning">View Items</a>
-        </td>
+  {% if bool == True %}
+  {% if boolcat == True %}
+  <h1>List of Categories</h1>
+  <br>
+  <div id="table-container">
+    <table id="dataTable">
+      <tr> 
+        <th>Category Name</th>
+        <th>Action</th>
       </tr>
-    {% endfor %}
-  </table>
-</div>
+      {% for row in data %}
+        <tr>
+          <td>{{ row.cat_name }}</td>
+          <td>
+            <a href="{{ url_for('main.update_category', categories_id=row.id) }}" class="btn btn-primary">Edit</a>
+            <a href="{{ url_for('main.delete_category', categories_id=row.id) }}" class="btn btn-danger">Delete</a>
+            <a href="{{ url_for('main.add_item', categories_id=row.id) }}" class="btn btn-success">Add Item</a>
+            <a href="{{ url_for('main.view_items', categories_id=row.id,type='1')}}" class="btn btn-warning">View Items</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
 
-<form action="/admin-home{{ 'true' if bool1 else 'false' }} " method="post" style="display: flex;justify-content: center;align-items: center;margin-top:20px">
-  <button type="submit" class="btn btn-primary">Add New Category</button>
-</form>
-{% else %}
-
-<br>
-<div class="buttonwrap">
-<div>
-  <h2>Enter category name below:</h2>
-  <form action="/adminhomecategories" method="post">
-    <input type="text" name="category_name" placeholder="Category Name">
-    <button type="submit" class="btn btn-primary">Add to Table</button>
+  <form action="/admin-home{{ 'true' if bool1 else 'false' }} " method="post" class="text-center mt-3">
+    <button type="submit" class="btn btn-primary">Add New Category</button>
   </form>
-</div>
-<div>
-  <form action="/adminshowcategories" method="post" style="margin-top:90px;">
-    <button type="submit" class="btn btn-primary">Categories</button>
-  </form>
-</div>
-</div>
+  {% else %}
 
-<div id="table-container">
-  <table id="dataTable">
-    <tr>
-      <th>Category Name</th>
-    </tr>
-    {% for row in data %}
+  <br>
+  <div class="buttonwrap">
+    <div>
+      <h2>Enter category name below:</h2>
+      <form action="/adminhomecategories" method="post">
+        <input type="text" name="category_name" placeholder="Category Name">
+        <button type="submit" class="btn btn-primary">Add to Table</button>
+      </form>
+    </div>
+    <div>
+      <form action="/adminshowcategories" method="post" style="margin-top:90px;">
+        <button type="submit" class="btn btn-primary">Categories</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="table-container">
+    <table id="dataTable">
       <tr>
-        <td>{{ row.cat_name }}</td>
+        <th>Category Name</th>
       </tr>
-    {% endfor %}
-  </table>
+      {% for row in data %}
+        <tr>
+          <td>{{ row.cat_name }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  {% endif %}
+
+  {% else %}
+  <h1>No categories present</h1>
+  <div class="button-wrapper text-center">
+    <a href="{{ url_for('main.adminhome', bool1=True) }}">
+        <button class="btn btn-primary">Add New Category</button>
+    </a>
+  </div>
+  {% endif %}
 </div>
-
-
-{% endif %}
-
-{% else %}
-<h1>no categories present</h1>
-<div class="button-wrapper">
-  <a href="{{ url_for('main.adminhome', bool1=True) }}">
-      <button class="button">Add New Category</button>
-  </a>
-</a>
-
-</div>
-{% endif %}
 {% endblock %}

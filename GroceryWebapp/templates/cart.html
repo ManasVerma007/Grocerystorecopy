@@ -1,16 +1,80 @@
-{% extends "base.html" %} {% block head %} {{ super() }}
-<title>USER HOME PAGE</title>
+{% extends "base.html" %} 
+{% block head %} 
+  {{ super() }}
+  <title>USER HOME PAGE</title>
+  <style>
+    body {
+      background-color: #d3e8f5;
+      color: #333;
+    }
+  
+    .container {
+        margin-top: 30px;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  
+    .navbar {
+      background-color: #333;
+    }
+  
+    .navbar .navbar-nav .nav-link {
+      color: #fff;
+    }
+  
+    .navbar .navbar-nav .nav-link:hover {
+      color: #f5f5f5;
+    }
+  
+    .navbar .navbar-nav .active > .nav-link {
+      color: #f5f5f5;
+    }
+  
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+  
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+  
+    .table th,
+    .table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+  
+    .table th {
+      background-color: #f2f2f2;
+    }
+  
+    .alert {
+      margin-top: 20px;
+    }
+  
+    .buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .buttons a {
+      margin-right: 10px;
+    }
+  </style>
 {% endblock %}
 
 {% block nav %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbar">
+  <div id="navbar">
     <div class="navbar-nav">
       <a class="nav-item nav-link" id="home" href="/">Logout</a>
-      <!-- <a class="nav-item nav-link" id="user_login" href="/user_signup">User-signup</a> -->
     </div>
   </div>
 </nav>
@@ -19,93 +83,86 @@
 {% block content %}
 {% if purchbool != True %}
 <div class="container mt-5">
-    <h1>{{ user.first_name }}'s Cart</h1>
-    <table class="table mt-4">
+  <h1>{{ user.first_name }}'s Cart</h1>
+  <table class="table mt-4">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Product Name</th>
+        <th>Manufacture</th>
+        <th>Expiry</th>
+        <th>Price per Unit</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cartdata %}
+      <tr>
+        <td>{{ item.product.category.cat_name }}</td>
+        <td>{{ item.product.product_name }}</td>
+        <td>{{ item.product.manufacture }}</td>
+        <td>{{ item.product.expiry }}</td>
+        <td>{{ item.product.p_per_u }}</td>
+        <td>{{ item.cart_quantity }}</td>
+        <td>{{ item.cart_amount }}</td>
+        <td><a class="btn btn-primary" href="{{ url_for('main.delete_cart', cartid=item.cart_id, userid=user.id) }}">Delete</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-        <thead>
-            <tr>
-                <th>Category</th>
-                <th>Product Name</th>
-                <th>Manufacture</th>
-                <th>Expiry</th>
-                <th>Price per Unit</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
+  <div class="alert alert-info" role="alert">
+    Total amount = ₹ {{ totalprice}}
+  </div>
 
-        <tbody>
-            {% for item in cartdata %}
-            <tr>
-                <td>{{ item.product.category.cat_name }}</td>
-                <td>{{ item.product.product_name }}</td>
-                <td>{{ item.product.manufacture }}</td>
-                <td>{{ item.product.expiry }}</td>
-                <td>{{ item.product.p_per_u }}</td>
-                <td>{{ item.cart_quantity }}</td>
-                <td>{{ item.cart_amount }}</td>
-                <td><a class="btn btn-primary" href="{{ url_for('main.delete_cart', cartid=item.cart_id, userid=user.id) }}">Delete</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    
-    <div class="alert alert-info" role="alert">
-        Total amount = ₹ {{ totalprice}}
-        <br>
-    </div>
-
+  <div class="buttons">
     <a href="{{ url_for('main.purchase', userid=user.id) }}" class="btn btn-primary">Purchase</a>
-
-
     <a href="{{ url_for('main.userhome', userid=user.id) }}" class="btn btn-primary">Dashboard</a>
+  </div>
 </div>
 {% else %}
 <div class="container mt-5">
   <h1>{{ user.first_name }}'s Cart</h1>
   <table class="table mt-4">
-
-      <thead>
-          <tr>
-              <th>Category</th>
-              <th>Product Name</th>
-              <th>Manufacture</th>
-              <th>Expiry</th>
-              <th>Price per Unit</th>
-              <th>Quantity</th>
-              <th>Total</th>
-              <th>Delete</th>
-          </tr>
-      </thead>
-
-      <tbody>
-          {% for item in cartdata %}
-          <tr>
-              <td>{{ item.product.category.cat_name }}</td>
-              <td>{{ item.product.product_name }}</td>
-              <td>{{ item.product.manufacture }}</td>
-              <td>{{ item.product.expiry }}</td>
-              <td>{{ item.product.p_per_u }}</td>
-              <td>{{ item.cart_quantity }}</td>
-              <td>{{ item.cart_amount }}</td>
-              <td><a class="btn btn-primary" href="{{ url_for('main.delete_cart', cartid=item.cart_id, userid=user.id) }}">Delete</a></td>
-          </tr>
-          {% endfor %}
-      </tbody>
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Product Name</th>
+        <th>Manufacture</th>
+        <th>Expiry</th>
+        <th>Price per Unit</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cartdata %}
+      <tr>
+        <td>{{ item.product.category.cat_name }}</td>
+        <td>{{ item.product.product_name }}</td>
+        <td>{{ item.product.manufacture }}</td>
+        <td>{{ item.product.expiry }}</td>
+        <td>{{ item.product.p_per_u }}</td>
+        <td>{{ item.cart_quantity }}</td>
+        <td>{{ item.cart_amount }}</td>
+        <td><a class="btn btn-primary" href="{{ url_for('main.delete_cart', cartid=item.cart_id, userid=user.id) }}">Delete</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
   </table>
 
- 
-  
   <div class="alert alert-info" role="alert">
-      <br>
+    <br>
   </div>
-
 
   <a href="{{ url_for('main.userhome', userid=user.id) }}" class="btn btn-primary">Dashboard</a>
 
-  <center><p> Thank You For Purchasing !!!</p></center>
+  <center><p>Thank You For Purchasing!!!</p></center>
 </div>
 {% endif %}
 {% endblock %}
+
+

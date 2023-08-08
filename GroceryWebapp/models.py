@@ -1,6 +1,5 @@
 from . import db  # Importing current package (website folder), i.e., the db object
 from flask_login import UserMixin
-from sqlalchemy.sql import func
 
 
 # User model representing user sign-up information
@@ -25,7 +24,7 @@ class Categories(db.Model, UserMixin):
 class Products(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)  # Primary key for the product
     product_name = db.Column(
-        db.String(150), unique=True, nullable=False
+        db.String(150), nullable=False
     )  # Product name
     manufacture = db.Column(db.String(150))  # Manufacturing date of the product
     expiry = db.Column(db.String(150))  # Expiry date of the product

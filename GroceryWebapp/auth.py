@@ -46,61 +46,15 @@ def usersignup():
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
         user = User.query.filter_by(email=email).first()
-        if user:
-            flash("Email already exists.", category="error")
-        elif (len(email)) < 4:
-            flash("Email must be greater than 4 letters", category="error")
-        elif len(first_name) < 2:
-            flash("First name must be greater than 1 character", category="error")
-        elif password1 != password2:
-            flash("Passwords do not match", category="error")
-        elif len(password1) < 1:
-            flash("Password must be at least 3 characters", category="error")
-        else:
+        if (not user and len(email)>4 and len(first_name)>4 and password1==password2 and len(password1)>0 and len(password2)>0):
             new_user = User(
                 email=email, first_name=first_name, password=password1, Place="useronly"
             )
             db.session.add(new_user)
             db.session.commit()
-            flash("Account created!", category="success")
             return render_template("user_login.html")
     return render_template("user_signup.html")
 
-
-# # Admin sign-up route
-# @auth.route("/admin_signup", methods=["GET", "POST"])
-# def adminsignup():
-#     if request.method == "POST":
-#         email = request.form.get("email")
-#         first_name = request.form.get("firstName")
-#         password1 = request.form.get("password1")
-#         password2 = request.form.get("password2")
-#         user = User.query.filter_by(email=email).first()
-#         if user:
-#             flash("Email already exists.", category="error")
-#         elif (len(email)) < 1:
-#             flash("Email must be greater than 4 letters", category="error")
-#         elif len(first_name) < 2:
-#             flash("First name must be greater than 1 character", category="error")
-#         elif password1 != password2:
-#             flash("Passwords do not match", category="error")
-#         elif len(password1) < 1:
-#             flash("Password must be at least 4 characters", category="error")
-#         else:
-#             new_user = User(
-#                 email=email,
-#                 first_name=first_name,
-#                 password=password1,
-#                 Place="adminonly",
-#             )
-#             db.session.add(new_user)
-#             db.session.commit()
-#             flash("Account created!", category="success")
-#             return render_template("admin_login.html")
-#     return render_template("admin_signup.html")
-
-
-# Logout route (Note: There's no logout logic implemented in this code)
 @auth.route("/logout")
 def logout():
     return render_template("signup.html")

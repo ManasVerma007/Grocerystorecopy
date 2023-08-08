@@ -1,10 +1,6 @@
-from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from . import db
-from .models import User
-from .models import Categories
-from .models import Products
-from .models import Cart
+from .models import User,Categories,Products,Cart
 from datetime import datetime
 
 # Create a blueprint named 'main'

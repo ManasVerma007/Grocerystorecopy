@@ -9,7 +9,7 @@ DB_NAME = "database.db" # name of the database is given here
 def create_database(app):
     if not path.exists('GroceryWebapp/' + DB_NAME):
         db.create_all(app=app)
-        print('Created Database!')
+
 
 def create_app():
     app = Flask(__name__)

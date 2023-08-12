@@ -1,13 +1,15 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for,session
 from .models import User
 from . import db  # Importing the db object from __init__.py
-
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 auth = Blueprint("auth", __name__)
 
 
 # User login route
+
 @auth.route("/user_login", methods=["GET", "POST"])
 def userlogin():
+    session.clear()
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
@@ -16,6 +18,8 @@ def userlogin():
         user = User.query.filter_by(email=email).first()
         if user:
             if user.password == password and user.Place == "useronly":
+                login_user(user)
+                
                 return redirect(url_for("main.userhome", userid=user.id))
             else:
                 return render_template("user_login.html")
@@ -23,6 +27,7 @@ def userlogin():
 
 
 # Admin login route
+
 @auth.route("/admin_login", methods=["GET", "POST"])
 def adminlogin():
     if request.method == "POST":
@@ -31,7 +36,8 @@ def adminlogin():
         user = User.query.filter_by(email=email).first()
         if user:
             if user.password == password and user.Place == "adminonly":
-                return redirect(url_for("main.adminhome", bool1=False))
+                login_user(user)
+                return redirect(url_for("main.adminhome", bool1=False,userid=user.id))
             else:
                 return render_template("admin_login.html")
     return render_template("admin_login.html")
@@ -57,4 +63,6 @@ def usersignup():
 
 @auth.route("/logout")
 def logout():
-    return render_template("signup.html")
+    logout_user()
+    session.clear()
+    return render_template("base.html")

@@ -14,7 +14,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  /* Add any additional custom styles here */
+
   .navbar {
     background-color: #333;
   }
@@ -75,6 +75,30 @@
   tr:hover {
     background-color: #f5f5f5;
   }
+  
+  /* Custom styles for category and product boxes */
+  .category-box {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .product-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .product-box {
+    flex-basis: calc(33.33% - 10px);
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
 </style>
 {% endblock %}
 
@@ -82,7 +106,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div  id="navbar">
     <div class="navbar-nav">
-      <a class="nav-item nav-link" id="home" href="/">Logout</a>
+      <a class="nav-item nav-link" id="home" href="/logout">Logout</a>
       <a class="nav-item nav-link" id="home" href="{{url_for('main.usercart', userid=userid)}}">Cart</a>
     </div>
   </div>
@@ -98,23 +122,21 @@
   </div>
 
   <h1 class="text-center mt-4">Products Table</h1>
-  <table>
-    <tr>
-      <th>Category</th>
-      <th>Products</th>
-    </tr>
-    {% for category in categories %}
-    <tr>
-      <td>{{ category.cat_name }}</td>
+  
+  {% for category in categories %}
+  <div class="category-box">
+    <h2>{{ category.cat_name }}</h2>
+    <div class="product-boxes">
       {% for product in category.products %}
-      <td>
+      <div class="product-box">
         <b>{{ product.product_name }}</b><br>
         Price: {{ product.p_per_u }}<br>
         <a href="{{url_for('main.addtocart', product_id=product.id,userid=userid)}}" class="btn btn-primary mt-2">Add This</a>
-      </td>
+      </div>
       {% endfor %}
-    </tr>
-    {% endfor %}
-  </table>
+    </div>
+  </div>
+  {% endfor %}
+  
 </div>
 {% endblock %}

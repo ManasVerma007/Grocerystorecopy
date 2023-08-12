@@ -4,6 +4,7 @@ from flask_login import UserMixin
 
 # User model representing user sign-up information
 class User(db.Model, UserMixin):
+
     id = db.Column(db.Integer, primary_key=True)  # Primary key for the user
     email = db.Column(db.String(150), unique=True)  # User's email address
     password = db.Column(db.String(150))  # User's password
